@@ -1,0 +1,43 @@
+
+<!doctype html><html lang="tr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{margin:0;background:#000;color:#fff;font-family:Arial;text-align:center;overflow:hidden;touch-action:manipulation}
+#hud{padding:10px}
+#arena{position:relative;height:80vh}
+.p{position:absolute;bottom:240px;width:30vw;height:12px;background:#222}
+#l{left:0}#r{right:0}
+.f{position:absolute;bottom:252px;font-size:76px;transition:.5s,left .5s,right .5s,bottom 1.2s}
+#tr{left:18vw}#us{right:18vw}
+#msg{display:none;position:fixed;inset:0;background:#000d;align-items:center;justify-content:center;flex-direction:column;font-size:34px}
+button{font-size:22px}
+</style>
+<div id=hud>
+<div>⏱ <span id=t>5</span>s | 👆 <span id=c>0</span>/30</div>
+<div>🇹🇷 <span id=trs>○○○</span> &nbsp;&nbsp; 🇺🇸 <span id=uss>○○○</span></div>
+</div>
+<div id=arena><div id=l class=p></div><div id=r class=p></div><div id=tr class=f>🇹🇷</div><div id=us class=f>🇺🇸</div></div>
+<div id=msg><div id=txt></div><br><button onclick=location.reload()>Yeniden Oyna</button></div>
+<script>
+let taps=0,time=5,s=0,f=0,lock=false;
+onpointerdown=()=>{if(!lock){taps++;c.textContent=taps;}}
+function dots(n){return "●".repeat(n)+"○".repeat(3-n)}
+function upd(){
+trs.textContent=dots(f);uss.textContent=dots(s);
+tr.style.left=(18+f*8)+"vw";us.style.right=(18+s*8)+"vw";
+if(s>=3)end(true); if(f>=3)end(false);
+}
+function end(win){
+lock=true;
+let el=win?us:tr;
+el.style.bottom="-140px";
+setTimeout(()=>{msg.style.display="flex";txt.textContent=win?"AFERİN BİZİM GIIIZ 🤩":"DÜNYANIN EN GÜÇLÜ ÜLKESİNİ YENEMEZSİN 😎";},1000);
+}
+setInterval(()=>{
+if(lock)return;
+if(--time<=0){
+if(taps>=30)s++; else f++;
+taps=0; c.textContent=0; time=5; upd();
+}
+t.textContent=time;
+},1000);
+</script>
